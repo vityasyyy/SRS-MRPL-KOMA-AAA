@@ -21,6 +21,9 @@
 \usepackage[sedes]{kultem}
 \usepackage[english]{babel}
 \usepackage{mdframed}
+\usepackage[backend=bibtex, style=ieee]{biblatex} % You can change 'numeric' to 'ieee' or 'apa' if you want
+\addbibresource{references.bib} % This points to your .bib file
+
 
 %% INSERT YOUR PACKAGES HERE
 \usepackage[accsupp]{axessibility}% improves PDF readability for those with disabilities.
@@ -28,8 +31,11 @@
 \usepackage{lipsum}
 \usepackage{imakeidx}
 \makeindex
+\usepackage{float}
 \usepackage{listings}
-
+\usepackage{tabularx}
+\setlength{\headheight}{15pt} % to avoid compiler warnings
+\renewcommand{\arraystretch}{1.2} % Adjust row height for better readability
 %% TITLE PAGE OPTIONS (only works with \maketitle is called in the document)
 \title{Project of AAA Furnitures}
 \subtitle{Software Requirement Specification}
@@ -37,7 +43,7 @@
 \author{Andreandhiki Riyanta Putra\\Andrian Danar Perdana\\M. Argya Vityasy}
 \professor{Khabib Mustofa}
 \status{DRAFT adapted from \href{https://dspmuranchi.ac.in/pdf/Blog/srs_template-ieee.pdf}{IEEE SRS Template}}
-\version{0.8}
+\version{1.0}
 
 %% DOCUMENT
 \begin{document}
@@ -62,39 +68,61 @@
 \chapter{Introduction}
 
 \section{Purpose}
-$<$Identify the product whose software requirements are specified in this 
-document, including the revision or release number. Describe the scope of the 
-product that is covered by this SRS, particularly if this SRS describes only 
-part of the system or a single subsystem.$>$
-
-\section{Document Conventions}
-$<$Describe any standards or typographical conventions that were followed when 
-writing this SRS, such as fonts or highlighting that have special significance.  
-For example, state whether priorities  for higher-level requirements are assumed 
-to be inherited by detailed requirements, or whether every requirement statement 
-is to have its own priority.$>$
-
-\section{Intended Audience and Reading Suggestions}
-$<$Describe the different types of reader that the document is intended for, 
-such as developers, project managers, marketing staff, users, testers, and 
-documentation writers. Describe what the rest of this SRS contains and how it is 
-organized. Suggest a sequence for reading the document, beginning with the 
-overview sections and proceeding through the sections that are most pertinent to 
-each reader type.$>$
+The purpose of this document is to present a detailed description of the functional
+and non-functional requirements for the Furniture Selling Web Based Application.
+It will also explain the app constraints, interface, and interactions with each services.
+This document is intended for both the stakeholders and the developers
+for a reference of developing the first version of the application.
 
 \section{Project Scope}
-$<$Provide a short description of the software being specified and its purpose, 
-including relevant benefits, objectives, and goals. Relate the software to 
-corporate goals or business strategies. If a separate vision and scope document 
-is available, refer to it rather than duplicating its contents here.$>$
+AAA Furnitures is a web-based application that allows the customers of AAA Furnitures 
+to purchase furnitures online. The application will allow the customers 
+to browse the available furnitures, add them to the cart,
+make secure payments, and track the delivery of the purchased items.
+The application will also allow the admin to manage the products displayed on the website, 
+the orders made by the customers, and be the contact center for the customers.
+The system will consist of multiple microservices, including the product service,
+the order service, the payment service, the contact service, and the delivery service.
+
+
+\section{Definitions, Acronyms, and Abbreviations}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.2} % Adjust row height for better readability
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Term} & \textbf{Definition} \\
+        \hline
+        User & A registered customer who can browse, add to cart, and place orders. \\
+        \hline
+        Admin & A user with special privileges to manage products, orders, and the contact for users. \\
+        \hline
+        Cart & A temporary collection of items selected by a user for purchase. \\
+        \hline
+        Order & A confirmed request for purchasing one or more items. \\
+        \hline
+        JWT & JSON Web Token, used for authentication and authorization. Used for the user login, logout\cite{rfc7519}  \\
+        \hline
+        API & Application Programming Interface, allows different services to communicate with each other.\cite{API}\\
+        \hline
+        REST & Representational State Transfer, an architectural style for designing APIs that use stateless communication over HTTP.\cite{REST} \\
+        \hline
+        Session & A temporary authentication state that maintains user login status. \\
+        \hline
+        SQL & Structured Query Language, used for managing relational databases by defining, querying, and modifying data.\cite{SQL}\\
+        \hline
+        Microservice & An architectural style that structures an application as a collection of small, independent, and loosely coupled services.\cite{9282637} \\
+        \hline
+        Message Queueing & A communication method where messages are sent and stored in a queue, ensuring asynchronous processing between microservices such as order, delivery, and payment services.\cite{Bouchenak2009}\\
+        \hline
+    \end{tabularx}
+    \caption{Definitions, Acronyms, and Abbreviations}
+    \label{tab:definitions}
+
+\end{table}
 
 \section{References}
-$<$List any other documents or Web addresses to which this SRS refers. These may 
-include user interface style guides, contracts, standards, system requirements 
-specifications, use case documents, or a vision and scope document. Provide 
-enough information so that the reader could access a copy of each reference, 
-including title, author, version number, date, and source or location.$>$
-
+\printbibliography[heading=none]
 
 \chapter{Overall Description}
 
@@ -302,6 +330,4 @@ in the SRS so they can be tracked to closure.$>$
 \cleardoublepage
 \addcontentsline{toc}{chapter}{\indexname}
 \printindex
-\bibliography{references}
-\bibliographystyle{alpha}
 \end{document}

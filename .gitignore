@@ -1,8 +1,10 @@
-*
+*.*
 !.gitignore
 !*.tex 
 !*.sty
 !*.pdf
-!/img
 !*.bib
 !*.md
+!*.png
+!*.jpg
+!*.jpeg

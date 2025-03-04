@@ -21,6 +21,7 @@
 \usepackage[sedes]{kultem}
 \usepackage[english]{babel}
 \usepackage{mdframed}
+\usepackage{csquotes} % for compilation error
 \usepackage[backend=bibtex, style=ieee]{biblatex} % You can change 'numeric' to 'ieee' or 'apa' if you want
 \addbibresource{references.bib} % This points to your .bib file
 
@@ -79,10 +80,10 @@ AAA Furnitures is a web-based application that allows the customers of AAA Furni
 to purchase furnitures online. The application will allow the customers 
 to browse the available furnitures, add them to the cart,
 make secure payments, and track the delivery of the purchased items.
-The application will also allow the admin to manage the products displayed on the website, 
-the orders made by the customers, and be the contact center for the customers.
-The system will consist of multiple microservices, including the product service,
-the order service, the payment service, the contact service, and the delivery service.
+The application will also allow the admin to manage the products displayed on the website 
+and the orders made by the customers.
+The system will consist of multiple microservices, including the auth service, product service,
+the order service, the payment service, and the delivery service.
 
 
 \section{Definitions, Acronyms, and Abbreviations}
@@ -127,62 +128,199 @@ the order service, the payment service, the contact service, and the delivery se
 \chapter{Overall Description}
 
 \section{Product Perspective}
-$<$Describe the context and origin of the product being specified in this SRS.  
-For example, state whether this product is a follow-on member of a product 
-family, a replacement for certain existing systems, or a new, self-contained 
-product. If the SRS defines a component of a larger system, relate the 
-requirements of the larger system to the functionality of this software and 
-identify interfaces between the two. A simple diagram that shows the major 
-components of the overall system, subsystem interconnections, and external 
-interfaces can be helpful.$>$
+This product is a new e-commerce platform designed as a microservices-based system. 
+It aims to provide a comprehensive online shopping experience with user authentication,
+product browsing, order management, payment processing, and delivery tracking capabilities.
+The system is self-contained but designed with a modular architecture to allow for future expansion
+and integration with third-party services such as payment gateways and shipping providers. 
+The microservices architecture ensures that each component can be developed, deployed, and scaled independently.
 
+The following figure \ref{fig:architecture} illustrates the high-level architecture of the system:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/app diagram.drawio.png}
+    \caption{System Architecture Diagram}
+    \label{fig:architecture}
+\end{figure}
 \section{Product Functions}
-$<$Summarize the major functions the product must perform or must let the user 
-perform. Details will be provided in Section 3, so only a high level summary 
-(such as a bullet list) is needed here. Organize the functions to make them 
-understandable to any reader of the SRS. A picture of the major groups of 
-related requirements and how they relate, such as a top level data flow diagram 
-or object class diagram, is often effective.$>$
+The e-commerce platform will perform the following major functions:
+
+\begin{itemize}
+    \item User Authentication and Account Management
+    \begin{itemize}
+        \item Register new user accounts
+        \item Login and logout functionality
+        \item Password reset capabilities
+    \end{itemize}
+    
+    \item Product Catalog Management
+    \begin{itemize}
+        \item Browse and display product information
+        \item Add new products (administrator function)
+        \item Delete products (administrator function)
+        \item Manage product inventory
+    \end{itemize}
+    
+    \item Order Processing
+    \begin{itemize}
+        \item Add products to shopping cart
+        \item Place and confirm orders
+        \item Cancel existing orders
+        \item Track order status and delivery
+    \end{itemize}
+    
+    \item Payment Processing
+    \begin{itemize}
+        \item Process secure payments for orders
+        \item Notify catalog service for inventory updates
+    \end{itemize}
+    
+    \item Delivery Management
+    \begin{itemize}
+        \item Arrange delivery for completed orders
+        \item Track delivery status
+    \end{itemize}
+\end{itemize}
+Figure \ref{fig:usecase} illustrates the use case for this application:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/users diagram.drawio (1).png}
+    \caption{Use Case Diagram}
+    \label{fig:usecase}
+\end{figure}
 
 \section{User Classes and Characteristics}
-$<$Identify the various user classes that you anticipate will use this product.  
-User classes may be differentiated based on frequency of use, subset of product 
-functions used, technical expertise, security or privilege levels, educational 
-level, or experience. Describe the pertinent characteristics of each user class.  
-Certain requirements may pertain only to certain user classes. Distinguish the 
-most important user classes for this product from those who are less important 
-to satisfy.$>$
+The system will serve the following user classes:
+
+\begin{itemize}
+    \item Regular App Users
+    \begin{itemize}
+        \item Frequency: Regular, potentially daily use
+        \item Functions: Browse products, manage cart, place orders, track deliveries
+        \item Technical expertise: Minimal, should be able to navigate standard e-commerce interfaces
+        \item Priority: High - primary user class
+    \end{itemize}
+    
+    \item Administrators
+    \begin{itemize}
+        \item Frequency: Regular, primarily during business hours
+        \item Functions: Manage product catalog, arrange deliveries, handle order issues
+        \item Technical expertise: Moderate, trained on system administration
+        \item Security level: High, with access to user data and system configuration
+        \item Priority: Medium - essential for system operation but smaller user base
+    \end{itemize}
+    
+    \item Guest Users
+    \begin{itemize}
+        \item Frequency: Occasional to one-time use
+        \item Functions: Browse products only, limited functionality until registration
+        \item Technical expertise: Minimal
+        \item Priority: Low - encourage conversion to registered users
+    \end{itemize}
+\end{itemize}
 
 \section{Operating Environment}
-$<$Describe the environment in which the software will operate, including the 
-hardware platform, operating system and versions, and any other software 
-components or applications with which it must peacefully coexist.$>$
+The software will operate in the following environment:
+
+\begin{itemize}
+    \item Server Environment
+    \begin{itemize}
+        \item Containerized microservices using Docker
+        \item Kubernetes for orchestration
+        \item Linux-based operating systems
+        \item Scalable cloud infrastructure (AWS, Google Cloud, or Azure)
+    \end{itemize}
+    
+    \item Client Environment
+    \begin{itemize}
+        \item Web browser support: Chrome, Firefox, Safari, Edge (latest versions)
+        \item Responsive design for various screen sizes
+    \end{itemize}
+    
+    \item Database Environment
+    \begin{itemize}
+        \item Dedicated database for each microservice as shown in the architecture diagram
+        \item Support for SQL and NoSQL databases depending on service requirements
+    \end{itemize}
+    
+    \item Network Environment
+    \begin{itemize}
+        \item HTTP/HTTPS protocols for client-server communication
+        \item Message Queue (MQ) for asynchronous inter-service communication
+    \end{itemize}
+\end{itemize}
 
 \section{Design and Implementation Constraints}
-$<$Describe any items or issues that will limit the options available to the 
-developers. These might include: corporate or regulatory policies; hardware 
-limitations (timing requirements, memory requirements); interfaces to other 
-applications; specific technologies, tools, and databases to be used; parallel 
-operations; language requirements; communications protocols; security 
-considerations; design conventions or programming standards (for example, if the 
-customer’s organization will be responsible for maintaining the delivered 
-software).$>$
+The following constraints will affect the design and implementation of the system:
 
-\section{User Documentation}
-$<$List the user documentation components (such as user manuals, on-line help, 
-and tutorials) that will be delivered along with the software. Identify any 
-known user documentation delivery formats or standards.$>$
+\begin{itemize}
+    \item Architectural Constraints
+    \begin{itemize}
+        \item Microservices architecture as depicted in the diagram
+        \item RESTful API design principles for service interfaces
+        \item Message Queue for asynchronous communication between services
+    \end{itemize}
+    
+    \item Security Constraints
+    \begin{itemize}
+        \item Compliance with PCI DSS for payment processing
+        \item Secure user authentication and authorization
+        \item Data encryption for sensitive information
+        \item Safe payment for user
+        \item Regular security audits and penetration testing
+    \end{itemize}
+    
+    \item Integration Constraints
+    \begin{itemize}
+        \item Compatible with standard payment gateways
+        \item API-based integration with shipping and delivery services
+    \end{itemize}
+    
+    \item Performance Constraints
+    \begin{itemize}
+        \item Response time for user interactions under 2 seconds
+        \item System capable of handling at least 1000 concurrent users
+        \item Scalability to accommodate peak shopping seasons
+    \end{itemize}
+    
+    \item Development Constraints
+    \begin{itemize}
+        \item Coding standards and style guides for consistency
+        \item Comprehensive unit and integration testing
+        \item CI/CD pipeline for automated testing and deployment
+    \end{itemize}
+\end{itemize}
+
 \section{Assumptions and Dependencies}
+The following assumptions and dependencies apply to the project:
 
-$<$List any assumed factors (as opposed to known facts) that could affect the 
-requirements stated in the SRS. These could include third-party or commercial 
-components that you plan to use, issues around the development or operating 
-environment, or constraints. The project could be affected if these assumptions 
-are incorrect, are not shared, or change. Also identify any dependencies the 
-project has on external factors, such as software components that you intend to 
-reuse from another project, unless they are already documented elsewhere (for 
-example, in the vision and scope document or the project plan).$>$
-
+\begin{itemize}
+    \item Assumptions
+    \begin{itemize}
+        \item Users have access to stable internet connections
+        \item Peak usage will occur during promotional events and holidays
+        \item Most users will access the system via mobile devices
+        \item Inventory data will be updated in near real-time
+    \end{itemize}
+    
+    \item Dependencies
+    \begin{itemize}
+        \item Reliable third-party payment processing services
+        \item Shipping and delivery partner APIs
+        \item Cloud infrastructure provider's uptime and service level agreements
+        \item Message Queue service for inter-service communication
+        \item Database management systems for each service's data storage
+    \end{itemize}
+    
+    \item Risks
+    \begin{itemize}
+        \item Integration challenges with third-party services
+        \item Scalability issues during peak usage periods
+        \item Security vulnerabilities in payment processing
+        \item Data consistency across microservices
+    \end{itemize}
+\end{itemize}
 
 \chapter{External Interface Requirements}
 

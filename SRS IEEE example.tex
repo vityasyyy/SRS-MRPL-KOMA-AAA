@@ -118,6 +118,10 @@ the order service, the payment service, and the delivery service.
         \hline
         Message Queueing & A communication method where messages are sent and stored in a queue, ensuring asynchronous processing between microservices such as order, delivery, and payment services.\cite{Bouchenak2009}\\
         \hline
+        LCP Test & Large Contentful Paint Test. Measures how fast the largest visible content on the webpage loads. Ideal: below 2.5s. \\
+        \hline
+        FCP Test & First Contentful Paint Test. Measures when the first content appears on the webpage loads. Ideal: below 1.8s. \\
+        \hline
     \end{tabularx}
     \caption{Definitions, Acronyms, and Abbreviations}
     \label{tab:definitions}
@@ -327,14 +331,14 @@ The following assumptions and dependencies apply to the project:
 \chapter{External Interface Requirements}
 
 \section{User Interfaces}
-$<$Describe the logical characteristics of each interface between the software 
-product and the users. This may include sample screen images, any GUI standards 
-or product family style guides that are to be followed, screen layout 
-constraints, standard buttons and functions (e.g., help) that will appear on 
-every screen, keyboard shortcuts, error message display standards, and so on.  
-Define the software components for which a user interface is needed. Details of 
-the user interface design should be documented in a separate user interface 
-specification.$>$
+% $<$Describe the logical characteristics of each interface between the software 
+% product and the users. This may include sample screen images, any GUI standards 
+% or product family style guides that are to be followed, screen layout 
+% constraints, standard buttons and functions (e.g., help) that will appear on 
+% every screen, keyboard shortcuts, error message display standards, and so on.  
+% Define the software components for which a user interface is needed. Details of the user interface design should be documented in a separate user interface 
+% specification.$>$
+\subsection{Landing Page}
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.4\textwidth}
@@ -354,13 +358,13 @@ specification.$>$
     \begin{minipage}{0.4\textwidth}
         \centering
         \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-3.png}}
-        \caption{Hero Section}
+        \caption{collections Section}
     \end{minipage}
     \hfill
     \begin{minipage}{0.5\textwidth}
         \centering
         \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-4.png}}
-        \caption{About Section}
+        \caption{Custom Design Section}
     \end{minipage}
 \end{figure}
 
@@ -369,15 +373,75 @@ specification.$>$
     \begin{minipage}{0.48\textwidth}
         \centering
         \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-5.png}}
-        \caption{Hero Section}
+        \caption{Timeline and Contact Section}
     \end{minipage}
     \hfill
     \begin{minipage}{0.44\textwidth}
         \centering
         \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-6.png}}
-        \caption{About Section}
+        \caption{CTA Section}
     \end{minipage}
 \end{figure}
+
+\begin{enumerate}
+    \item[$\bullet$] First-time users accessing the website will land on this page.
+    \item[$\bullet$] Displays an overview of the product catalog, key collections, and featured products.
+    \item[$\bullet$] Includes navigation links to the catalog, collections, warehouse, and contact page.
+    \item[$\bullet$] CTA buttons allow users to download the catalog, contact support, or browse collections.
+\end{enumerate}
+
+\subsection{Warehouse Page}
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=0.7\linewidth]{img/ui/warehousepage.png}}
+    \caption{Warehouse Page}
+\end{figure}
+\begin{enumerate}
+    \item[$\bullet$] Shows the business’s warehouse/store location using Google Maps API.
+    \item[$\bullet$] Displays the address and contact details.
+    \item[$\bullet$] A CTA button allows users to open the location directly in Google Maps for navigation.
+\end{enumerate}
+
+\subsection{Catalogue Page}
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=0.7\linewidth]{img/ui/cataloguepage.png}}
+    \caption{Catalogue Page}
+\end{figure}
+\begin{enumerate}
+    \item[$\bullet$] Provides a dedicated section for users to download the latest catalog in PDF format.
+    \item[$\bullet$] Includes a clear Download CTA button.
+\end{enumerate}
+
+\subsection{Collection Page}
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=0.7\linewidth]{img/ui/collectionpage.png}}
+    \caption{Collection Page}
+\end{figure}
+\begin{enumerate}
+    \item[$\bullet$] Displays product categories in two main sections:
+    \begin{enumerate}
+        \item Materials Collection (Wood, Marble, River Stone).
+        \item Other Categories (Kitchen Set, Bathroom Set, Decoration & Accessories, Exterior).
+    \end{enumerate}
+    \item[$\bullet$] Users can filter and browse products based on selected categories.
+\end{enumerate}
+
+\subsection{Product Page}
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=0.7\linewidth]{img/ui/productpage.png}}
+    \caption{Catalogue Page}
+\end{figure}
+\begin{enumerate}
+    \item[$\bullet$] Displays product details, including:
+    \begin{enumerate}
+        \item Product images (stored in Supabase/Vercel Postgres).
+        \item Name, description, dimensions (x, y, z), availability, and optional price.
+    \end{enumerate}
+    \item[$\bullet$] Users can contact the business via WhatsApp for further inquiries.
+\end{enumerate}
 
 
 % Done
@@ -558,49 +622,56 @@ This feature displays the warehouse/store location using Google Maps API, allowi
 \chapter{Other Nonfunctional Requirements}
 
 \section{Performance Requirements}
-$<$If there are performance requirements for the product under various 
-circumstances, state them here and explain their rationale, to help the 
-developers understand the intent and make suitable design choices. Specify the 
-timing relationships for real time systems. Make such requirements as specific 
-as possible. You may need to state performance requirements for individual 
-functional requirements or features.$>$
+
+The AAA Furnitures web app must ensure efficient performance under various conditions to enhance the user experience and support business operations.
+
+\begin{itemize}
+\item \textbf{Page Load Speed}: All web pages should achieve a Largest Contentful Paint (LCP) of under 2.5 seconds and a First Contentful Paint (FCP) of under 1.8 seconds under standard network conditions.
+\item \textbf{Search and Filtering}: The product search and filtering functions should return results within 2 seconds to ensure seamless navigation.
+\item \textbf{Image Optimization}: Product images must be served in WebP format and lazy-loaded to ensure they load in under 2 seconds.
+\item \textbf{API Performance}: Backend APIs should respond within 200ms to ensure smooth interaction between frontend and backend components.
+\item \textbf{Database Queries}: Queries should be optimized to execute within 100ms to prevent bottlenecks.
+\end{itemize}
 
 \section{Safety Requirements}
-$<$Specify those requirements that are concerned with possible loss, damage, or 
-harm that could result from the use of the product. Define any safeguards or 
-actions that must be taken, as well as actions that must be prevented. Refer to 
-any external policies or regulations that state safety issues that affect the 
-product’s design or use. Define any safety certifications that must be 
-satisfied.$>$
+Safety measures are essential to protect user data and ensure proper handling of catalogue data.
+
+\begin{itemize}
+\item \textbf{Error Handling}: The system should provide informative error messages and prevent crashes or unresponsive states when encountering unexpected user input. A dedicated 404 Error page is required.
+\item \textbf{Backup and Recovery}: Regular backups must be maintained to prevent data loss due to system failures.
+\item \textbf{Product Descriptions and Pricing}: The administrators must verify that product descriptions and pricing updates do not result in discrepancies that may mislead customers.
+\end{itemize}
 
 \section{Security Requirements}
-$<$Specify any requirements regarding security or privacy issues surrounding use 
-of the product or protection of the data used or created by the product. Define 
-any user identity authentication requirements. Refer to any external policies or 
-regulations containing security issues that affect the product. Define any 
-security or privacy certifications that must be satisfied.$>$
+Security measures focus on protecting user data and preventing unauthorized access.
+
+\begin{itemize}
+\item \textbf{Admin Panel Security}: The admin panel is only accessible via a designated URL path (/admin) and requires authentication to prevent unauthorized modifications.
+\item \textbf{HTTPS Compliance}: The web app enforces HTTPS to encrypt all communications between users and the server, ensuring secure transactions.
+\item \textbf{Database Security}: Supabase policies are implemented to restrict unauthorized access and ensure only authenticated users can perform certain operations.
+\item \textbf{Rate Limiting}: API rate limits should be enforced to mitigate abuse and prevent denial-of-service attacks.
+\end{itemize}
 
 \section{Software Quality Attributes}
-$<$Specify any additional quality characteristics for the product that will be 
-important to either the customers or the developers. Some to consider are: 
-adaptability, availability, correctness, flexibility, interoperability, 
-maintainability, portability, reliability, reusability, robustness, testability, 
-and usability. Write these to be specific, quantitative, and verifiable when 
-possible. At the least, clarify the relative preferences for various attributes, 
-such as ease of use over ease of learning.$>$
+The AAA Furnitures web app should adhere to high-quality software standards to enhance usability, maintainability, and reliability.
+
+\begin{itemize}
+\item \textbf{Usability}: The interface should be intuitive, ensuring users can browse, search, and complete purchases with minimal effort.
+\item \textbf{Reliability}: The system should achieve at least 99.5\% uptime to ensure availability for customers.
+\item \textbf{Scalability}: The application must be scalable to accommodate increased traffic and inventory expansion without performance degradation.
+\item \textbf{Maintainability}: The codebase should be modular and well-documented to allow for future enhancements and bug fixes.
+\item \textbf{Compatibility}: The web app should be compatible with major web browsers (Chrome, Firefox, Safari, Edge) and mobile devices.
+\end{itemize}
 
 \section{Business Rules}
-$<$List any operating principles about the product, such as which individuals or 
-roles can perform which functions under specific circumstances. These are not 
-functional requirements in themselves, but they may imply certain functional 
-requirements to enforce the rules.$>$
+The AAA Furnitures web app must follow operational principles that dictate how different roles interact with the system.
 
+\begin{itemize}
+\item \textbf{User Roles}: The system supports different roles such as customers and administrators. Customers do not need to create an account and can browse products and place orders, while administrators can manage inventory, orders via the admin panel.
+\item \textbf{Inventory Management}: Only authorized administrators can add, update, or remove products from the inventory.
+\item \textbf{Customer Support}: Users should be able to submit inquiries or complaints through a dedicated support line, either through WhatsApp or email linked on the footer of the website.
+\end{itemize}
 
-\chapter{Other Requirements}
-$<$Define any other requirements not covered elsewhere in the SRS. This might 
-include database requirements, internationalization requirements, legal 
-requirements, reuse objectives for the project, and so on. Add any new sections 
-that are pertinent to the project.$>$
 
 \chapter{Appendices}
 \section{Appendix A: Glossary}

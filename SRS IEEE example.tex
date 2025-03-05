@@ -411,40 +411,43 @@ Since transactions are conducted outside the platform via WhatsApp messaging, no
 To maintain data integrity and security, all API communications follow industry best practices, including authentication mechanisms, rate limiting, and encrypted data transmission where applicable.
 
 \chapter{System Features}
-$<$This template illustrates organizing the functional requirements for the 
-product by system features, the major services provided by the product. You may 
-prefer to organize this section by use case, mode of operation, user class, 
-object class, functional hierarchy, or combinations of these, whatever makes the 
-most logical sense for your product.$>$
+% Upper Bound
+% $<$This template illustrates organizing the functional requirements for the 
+% product by system features, the major services provided by the product. You may 
+% prefer to organize this section by use case, mode of operation, user class, 
+% object class, functional hierarchy, or combinations of these, whatever makes the 
+% most logical sense for your product.$>$
 
-\section{System Feature 1}
-$<$Don’t really say “System Feature 1.” State the feature name in just a few 
-words.$>$
+% \section{System Feature 1}
+% $<$Don’t really say “System Feature 1.” State the feature name in just a few 
+% words.$>$
 
-\subsection{Description and Priority}
-$<$Provide a short description of the feature and indicate whether it is of 
-High, Medium, or Low priority. You could also include specific priority 
-component ratings, such as benefit, penalty, cost, and risk (each rated on a 
-relative scale from a low of 1 to a high of 9).$>$
+% \subsection{Description and Priority}
+% $<$Provide a short description of the feature and indicate whether it is of 
+% High, Medium, or Low priority. You could also include specific priority 
+% component ratings, such as benefit, penalty, cost, and risk (each rated on a 
+% relative scale from a low of 1 to a high of 9).$>$
 
-\subsection{Stimulus/Response Sequences}
-$<$List the sequences of user actions and system responses that stimulate the 
-behavior defined for this feature. These will correspond to the dialog elements 
-associated with use cases.$>$
+% \subsection{Stimulus/Response Sequences}
+% $<$List the sequences of user actions and system responses that stimulate the 
+% behavior defined for this feature. These will correspond to the dialog elements 
+% associated with use cases.$>$
 
-\subsection{Functional Requirements}
-$<$Itemize the detailed functional requirements associated with this feature.  
-These are the software capabilities that must be present in order for the user 
-to carry out the services provided by the feature, or to execute the use case.  
-Include how the product should respond to anticipated error conditions or 
-invalid inputs. Requirements should be concise, complete, unambiguous, 
-verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary 
-information is not yet available.$>$
+% \subsection{Functional Requirements}
+% $<$Itemize the detailed functional requirements associated with this feature.  
+% These are the software capabilities that must be present in order for the user 
+% to carry out the services provided by the feature, or to execute the use case.  
+% Include how the product should respond to anticipated error conditions or 
+% invalid inputs. Requirements should be concise, complete, unambiguous, 
+% verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary 
+% information is not yet available.$>$
 
-$<$Each requirement should be uniquely identified with a sequence number or a 
-meaningful tag of some kind.$>$
+% $<$Each requirement should be uniquely identified with a sequence number or a 
+% meaningful tag of some kind.$>$
 
-REQ-1:	REQ-2:
+% REQ-1:	REQ-2:
+
+% Lower Bound
 
 \section{Product Management}
 
@@ -453,7 +456,7 @@ This feature enables administrators to efficiently manage the product catalog by
 
 \subsection{Stimulus/Response Sequences}
 \begin{enumerate}
-    \item The admin logs into the dashboard.
+    \item The admin logs into the dashboard or admin panel.
     \item The admin selects Add Product, fills in the product form, and submits it.
     \item The system stores the data in the database via Payload CMS.
     \item The admin selects Edit Product, modifies the details, and saves the changes.
@@ -468,6 +471,87 @@ This feature enables administrators to efficiently manage the product catalog by
     \item[$\bullet$] REQ-3: Product images must be stored and retrieved from Supabase (Vercel Postgres).
     \item[$\bullet$] REQ-4: The system must display error messages for invalid inputs.
 \end{enumerate}
+
+\section{Product Catalogue Display}
+
+\subsection{Description and Priority}
+This feature ensures that products in the catalog are displayed in an organized manner based on predefined collections. The catalog is structured into two main categories:
+\begin{enumerate}
+    \item Materials Collection: Includes products categorized by material, such as Wood, Marble, and River Stone.
+    \item Other Categories: Groups products based on their function or placement, including **Kitchen Set, Bathroom Set, Decoration & Accessories, and Exterior.
+\end{enumerate}
+This feature is high priority, as it directly impacts the browsing experience and usability of the catalog for customers.
+
+\subsection{Stimulus/Response Sequences}
+\begin{enumerate}
+    \item User Action: Opens the catalog landing page.
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Displays collections section and navigation bar with   various predefined collections with a categorized product listing.
+    \end{enumerate}
+    \item User Action: Selects a collection (e.g., "Wood" or "Kitchen Set").
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Filters and presents products from the selected collection.
+    \end{enumerate}
+    \item User Action: Clicks on a product to view its details.
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Displays the product’s name, description, dimensions, availability status, images, and optional price.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Functional Requirements}
+\begin{enumerate}
+    \item[$\bullet$] REQ-5: The system must categorize products into Materials Collection and Other Categories.
+    \item[$\bullet$] REQ-6: The catalog page must display collections in a structured manner.
+    \item[$\bullet$] REQ-7: Users must be able to filter products by collection.
+    \item[$\bullet$] REQ-8: The system must provide a detailed product view when a user selects a product.
+\end{enumerate}
+
+\section{Contact Form Submission}
+
+\subsection{Description and Priority}
+This feature allows users to submit inquiries or information requests via the contact form. Data is stored in Google Sheets API, and the admin receives email notifications via Nodemailer. This feature has a medium priority.
+
+\subsection{Stimulus/Response Sequences}
+\begin{enumerate}
+    \item User Action: Fills out the contact form and clicks Submit.
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Stores the data in Google Sheets API.
+    \end{enumerate}
+    \item System Action: Sends an email notification to the admin using Nodemailer.
+    \item User Action: Receives a confirmation message indicating that the inquiry was successfully submitted.
+\end{enumerate}
+
+\subsection{Functional Requirements}
+\begin{enumerate}
+    \item[$\bullet$] REQ-8: The contact form must store submissions in Google Sheets API.
+    \item[$\bullet$] REQ-10: The system must send email notifications to the admin via Nodemailer.
+    \item[$\bullet$] REQ-11: The system must display a confirmation message after form submission.
+\end{enumerate}
+
+\section{Warehouse Location Display}
+
+\subsection{Description and Priority}
+This feature displays the warehouse/store location using Google Maps API, allowing users to easily find the business’s physical address. This feature has a low priority, but it enhances the user experience.
+
+\subsection{Stimulus/Response Sequences}
+\begin{enumerate}
+    \item User Action: Opens the warehouse location page.
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Displays the warehouse address along with a map preview.
+    \end{enumerate}
+    \item User Action: Clicks the CTA button to open the location.
+    \begin{enumerate}
+        \item[$\bullet$] System Response: Redirects the user to Google Maps, opening the coordinates in the app or web version.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Functional Requirements}
+\begin{enumerate}
+    \item[$\bullet$] REQ-12: The system must display the warehouse location on a map.
+    \item[$\bullet$] REQ-13: The system must provide a CTA button that allows users to open the location in Google Maps.
+    \item[$\bullet$] REQ-14: Clicking the CTA button must redirect users to Google Maps with the correct coordinates.
+\end{enumerate}
+
 
 
 \chapter{Other Nonfunctional Requirements}

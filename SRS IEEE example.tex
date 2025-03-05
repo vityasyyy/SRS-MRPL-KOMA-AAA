@@ -35,6 +35,8 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{subcaption}
 \setlength{\headheight}{15pt} % to avoid compiler warnings
 \renewcommand{\arraystretch}{1.2} % Adjust row height for better readability
 %% TITLE PAGE OPTIONS (only works with \maketitle is called in the document)
@@ -312,7 +314,7 @@ The following assumptions and dependencies apply to the project:
         \item Message Queue service for inter-service communication
         \item Database management systems for each service's data storage
     \end{itemize}
-    
+    x
     \item Risks
     \begin{itemize}
         \item Integration challenges with third-party services
@@ -333,34 +335,80 @@ every screen, keyboard shortcuts, error message display standards, and so on.
 Define the software components for which a user interface is needed. Details of 
 the user interface design should be documented in a separate user interface 
 specification.$>$
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-1.png}}
+        \caption{Hero Section}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-2.png}}
+        \caption{About Section}
+    \end{minipage}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-3.png}}
+        \caption{Hero Section}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-4.png}}
+        \caption{About Section}
+    \end{minipage}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-5.png}}
+        \caption{Hero Section}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.44\textwidth}
+        \centering
+        \fbox{\includegraphics[width=\linewidth]{img/ui/landingpage-6.png}}
+        \caption{About Section}
+    \end{minipage}
+\end{figure}
+
+
+% Done
 \section{Hardware Interfaces}
-$<$Describe the logical and physical characteristics of each interface between 
-the software product and the hardware components of the system. This may include 
-the supported device types, the nature of the data and control interactions 
-between the software and the hardware, and communication protocols to be 
-used.$>$
+The catalog website and the admin dashboard do not depend on specific hardware components, and therefore, no direct hardware interfaces are required. All product-related data, including images, descriptions, and other relevant details, are managed within the web platform. Payment transactions are facilitated through direct communication via WhatsApp rather than a dedicated payment processing hardware.
 
+The database server connection is handled by the underlying infrastructure provided by the hosting service, ensuring reliable data storage and retrieval for both visitors and administrators. This approach abstracts hardware dependencies, allowing the system to operate efficiently across various environments.
+
+% Done
 \section{Software Interfaces}
-$<$Describe the connections between this product and other specific software 
-components (name and version), including databases, operating systems, tools, 
-libraries, and integrated commercial components. Identify the data items or 
-messages coming into the system and going out and describe the purpose of each.  
-Describe the services needed and the nature of communications. Refer to 
-documents that describe detailed application programming interface protocols.  
-Identify data that will be shared across software components. If the data 
-sharing mechanism must be implemented in a specific way (for example, use of a 
-global data area in a multitasking operating system), specify this as an 
-implementation constraint.$>$
+The catalog website interacts with various software components to ensure seamless functionality and efficient data management. It is developed using Next.js as the primary frontend framework, with Tailwind CSS for styling and responsive design. The backend is managed through Payload CMS, which facilitates content organization and retrieval.
 
+The system utilizes Supabase (Vercel Postgres) as its primary database for storing product details, user interactions, and other relevant data. Additionally, Supabase storage is used to handle and serve product images, ensuring optimized retrieval and delivery. Communication between the frontend and backend occurs via API requests, allowing structured data exchange and synchronization.
+
+For transactions, the website does not include an integrated payment gateway but instead facilitates purchases through direct WhatsApp messaging. Furthermore, third-party libraries and services are integrated for image optimization, SEO enhancements, and performance monitoring to improve user experience and website visibility.
+
+Data sharing between software components follows an API-driven approach, ensuring security, consistency, and scalability. If required, additional implementation constraints, such as authentication mechanisms and rate limiting, can be applied to protect data integrity.
+
+% Done
 \section{Communications Interfaces}
-$<$Describe the requirements associated with any communications functions 
-required by this product, including e-mail, web browser, network server 
-communications protocols, electronic forms, and so on. Define any pertinent 
-message formatting. Identify any communication standards that will be used, such 
-as FTP or HTTP. Specify any communication security or encryption issues, data 
-transfer rates, and synchronization mechanisms.$>$
+The catalog website relies on standard web communication protocols to ensure seamless data exchange between the frontend, backend, and external services. The system primarily uses HTTPS for secure communication and is accessible through modern web browsers.
 
+Data transactions between the frontend and backend are managed through GraphQL API provided by Payload CMS, allowing efficient retrieval and management of product information stored in Supabase (Vercel Postgres).
+
+For customer inquiries via the Contact Us form, the system integrates with Google Sheets API to store submitted form data in a centralized Google Sheet. Additionally, Nodemailer is used to send email notifications based on form submissions, ensuring that administrators are promptly informed of customer inquiries.
+
+To enhance the user experience, the website also integrates Google Maps API, which provides an interactive map displaying the warehouse location. This allows users to easily locate the company's physical store or storage facility.
+
+Since transactions are conducted outside the platform via WhatsApp messaging, no payment gateway integration is required. WhatsApp's built-in encryption ensures secure communication between customers and the business.
+
+To maintain data integrity and security, all API communications follow industry best practices, including authentication mechanisms, rate limiting, and encrypted data transmission where applicable.
 
 \chapter{System Features}
 $<$This template illustrates organizing the functional requirements for the 
@@ -398,7 +446,28 @@ meaningful tag of some kind.$>$
 
 REQ-1:	REQ-2:
 
-\section{System Feature 2 (and so on)}
+\section{Product Management}
+
+\subsection{Description and Priority}
+This feature enables administrators to efficiently manage the product catalog by adding, editing, and deleting products. Each product entry includes essential details such as name, description, availability status, dimensions (X, Y, Z), category, and optional pricing. Additionally, product images are stored securely in Supabase (Vercel Postgres). Given its critical role in maintaining the catalog, this feature is assigned high priority.
+
+\subsection{Stimulus/Response Sequences}
+\begin{enumerate}
+    \item The admin logs into the dashboard.
+    \item The admin selects Add Product, fills in the product form, and submits it.
+    \item The system stores the data in the database via Payload CMS.
+    \item The admin selects Edit Product, modifies the details, and saves the changes.
+    \item The system updates the product data in the database.
+    \item The admin selects Delete Product, and the system removes the product from the database.
+\end{enumerate}
+
+\subsection{Functional Requirements}
+\begin{enumerate}
+    \item[$\bullet$] REQ-1: The system must provide an admin dashboard to manage products.
+    \item[$\bullet$] REQ-2: The system must support CRUD (Create, Read, Update, Delete) operations for products.
+    \item[$\bullet$] REQ-3: Product images must be stored and retrieved from Supabase (Vercel Postgres).
+    \item[$\bullet$] REQ-4: The system must display error messages for invalid inputs.
+\end{enumerate}
 
 
 \chapter{Other Nonfunctional Requirements}

@@ -71,61 +71,50 @@
 \chapter{Introduction}
 
 \section{Purpose}
-The purpose of this document is to present a detailed description of the functional
-and non-functional requirements for the Furniture Selling Web Based Application.
-It will also explain the app constraints, interface, and interactions with each services.
-This document is intended for both the stakeholders and the developers
-for a reference of developing the first version of the application.
+The purpose of this document is to present the requirements for the AAA Furnitures Catalog Website. 
+This web-based application allows customers to browse furniture products and contact the company 
+via WhatsApp for purchases. The document describes the system's features, constraints, 
+and interface specifications. It serves as a reference for stakeholders and developers 
+to create the initial version of the product catalog platform.
 
 \section{Project Scope}
-AAA Furnitures is a web-based application that allows the customers of AAA Furnitures 
-to purchase furnitures online. The application will allow the customers 
-to browse the available furnitures, add them to the cart,
-make secure payments, and track the delivery of the purchased items.
-The application will also allow the admin to manage the products displayed on the website 
-and the orders made by the customers.
-The system will consist of multiple microservices, including the auth service, product service,
-the order service, the payment service, and the delivery service.
-
+AAA Furnitures Catalog Website is a responsive web application that enables customers to:
+\begin{itemize}
+    \item Browse furniture products with detailed information
+    \item Filter and search through product listings
+    \item Contact the company via WhatsApp for purchases
+\end{itemize}
+Administrators can manage product information through a dedicated interface. 
+The system consists of a single product service with a database, eliminating the need 
+for user accounts, payment processing, or order tracking features.
 
 \section{Definitions, Acronyms, and Abbreviations}
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.2} % Adjust row height for better readability
+    \renewcommand{\arraystretch}{1.2}
     \begin{tabularx}{\textwidth}{|l|X|}
         \hline
         \textbf{Term} & \textbf{Definition} \\
         \hline
-        User & A registered customer who can browse, add to cart, and place orders. \\
+        Visitor & Any user accessing the website to browse products \\
         \hline
-        Admin & A user with special privileges to manage products, orders, and the contact for users. \\
+        Admin & Authorized personnel managing product information \\
         \hline
-        Cart & A temporary collection of items selected by a user for purchase. \\
+        Product & Furniture item displayed in the catalog \\
         \hline
-        Order & A confirmed request for purchasing one or more items. \\
+        API & Application Programming Interface for data management\cite{API} \\
         \hline
-        JWT & JSON Web Token, used for authentication and authorization. Used for the user login, logout\cite{rfc7519}  \\
+        REST & Architectural style for API communication\cite{REST} \\
         \hline
-        API & Application Programming Interface, allows different services to communicate with each other.\cite{API}\\
+        SQL & Language for relational database management\cite{SQL} \\
         \hline
-        REST & Representational State Transfer, an architectural style for designing APIs that use stateless communication over HTTP.\cite{REST} \\
+        LCP Test & Measures largest content load time (Ideal: \< 2.5s) \\
         \hline
-        Session & A temporary authentication state that maintains user login status. \\
-        \hline
-        SQL & Structured Query Language, used for managing relational databases by defining, querying, and modifying data.\cite{SQL}\\
-        \hline
-        Microservice & An architectural style that structures an application as a collection of small, independent, and loosely coupled services.\cite{9282637} \\
-        \hline
-        Message Queueing & A communication method where messages are sent and stored in a queue, ensuring asynchronous processing between microservices such as order, delivery, and payment services.\cite{Bouchenak2009}\\
-        \hline
-        LCP Test & Large Contentful Paint Test. Measures how fast the largest visible content on the webpage loads. Ideal: below 2.5s. \\
-        \hline
-        FCP Test & First Contentful Paint Test. Measures when the first content appears on the webpage loads. Ideal: below 1.8s. \\
+        FCP Test & Measures first content load time (Ideal: \< 1.8s) \\
         \hline
     \end{tabularx}
     \caption{Definitions, Acronyms, and Abbreviations}
     \label{tab:definitions}
-
 \end{table}
 
 \section{References}
@@ -134,197 +123,134 @@ the order service, the payment service, and the delivery service.
 \chapter{Overall Description}
 
 \section{Product Perspective}
-This product is a new e-commerce platform designed as a microservices-based system. 
-It aims to provide a comprehensive online shopping experience with user authentication,
-product browsing, order management, payment processing, and delivery tracking capabilities.
-The system is self-contained but designed with a modular architecture to allow for future expansion
-and integration with third-party services such as payment gateways and shipping providers. 
-The microservices architecture ensures that each component can be developed, deployed, and scaled independently.
-
-The following figure \ref{fig:architecture} illustrates the high-level architecture of the system:
+The product is a responsive web catalog with direct WhatsApp integration for customer inquiries. 
+Key components include:
+\begin{itemize}
+    \item Frontend interface for product browsing
+    \item Backend product management system
+    \item Product database
+    \item WhatsApp Business API integration
+\end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{img/app diagram.drawio.png}
-    \caption{System Architecture Diagram}
-    \label{fig:architecture}
+    \includegraphics[width=0.7\textwidth]{img/erdSRSMRPL.png}
+    \caption{ERD}
+    \label{fig:erd}
 \end{figure}
-\section{Product Functions}
-The e-commerce platform will perform the following major functions:
 
+\section{Product Functions}
 \begin{itemize}
-    \item User Authentication and Account Management
+    \item Product Presentation
     \begin{itemize}
-        \item Register new user accounts
-        \item Login and logout functionality
-        \item Password reset capabilities
+        \item Display product categories
+        \item Show product details (images, specifications, pricing)
+        \\item Search and filtering functionality
     \end{itemize}
     
-    \item Product Catalog Management
+    \item WhatsApp Integration
     \begin{itemize}
-        \item Browse and display product information
-        \item Add new products (administrator function)
-        \item Delete products (administrator function)
-        \item Manage product inventory
+        \item Pre-filled message templates for product inquiries
+        \item Direct click-to-chat functionality
     \end{itemize}
     
-    \item Order Processing
+    \item Admin Functions
     \begin{itemize}
-        \item Add products to shopping cart
-        \item Place and confirm orders
-        \item Cancel existing orders
-        \item Track order status and delivery
-    \end{itemize}
-    
-    \item Payment Processing
-    \begin{itemize}
-        \item Process secure payments for orders
-        \item Notify catalog service for inventory updates
-    \end{itemize}
-    
-    \item Delivery Management
-    \begin{itemize}
-        \item Arrange delivery for completed orders
-        \item Track delivery status
+        \item Add/remove products
+        \item Update product information
+        \item Manage product categories
+        \item Manage communication with users
     \end{itemize}
 \end{itemize}
-Figure \ref{fig:usecase} illustrates the use case for this application:
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{img/users diagram.drawio (1).png}
-    \caption{Use Case Diagram}
+    \includegraphics[width=0.5\textwidth]{img/usecaseSRS.png}
+    \caption{Updated Use Case Diagram}
     \label{fig:usecase}
 \end{figure}
 
 \section{User Classes and Characteristics}
-The system will serve the following user classes:
-
 \begin{itemize}
-    \item Regular App Users
+    \item Website Visitors
     \begin{itemize}
-        \item Frequency: Regular, potentially daily use
-        \item Functions: Browse products, manage cart, place orders, track deliveries
-        \item Technical expertise: Minimal, should be able to navigate standard e-commerce interfaces
-        \item Priority: High - primary user class
+        \item Frequency: Variable (casual browsing to serious buyers)
+        \item Functions: Product browsing, WhatsApp contact
+        \item Technical Expertise: Basic web navigation skills
     \end{itemize}
     
     \item Administrators
     \begin{itemize}
-        \item Frequency: Regular, primarily during business hours
-        \item Functions: Manage product catalog, arrange deliveries, handle order issues
-        \item Technical expertise: Moderate, trained on system administration
-        \item Security level: High, with access to user data and system configuration
-        \item Priority: Medium - essential for system operation but smaller user base
-    \end{itemize}
-    
-    \item Guest Users
-    \begin{itemize}
-        \item Frequency: Occasional to one-time use
-        \item Functions: Browse products only, limited functionality until registration
-        \item Technical expertise: Minimal
-        \item Priority: Low - encourage conversion to registered users
+        \item Frequency: Daily updates
+        \item Functions: Full product catalog management
+        \item Security: Protected admin interface
     \end{itemize}
 \end{itemize}
 
 \section{Operating Environment}
-The software will operate in the following environment:
-
 \begin{itemize}
     \item Server Environment
     \begin{itemize}
-        \item Containerized microservices using Docker
-        \item Kubernetes for orchestration
-        \item Linux-based operating systems
-        \item Scalable cloud infrastructure (AWS, Google Cloud, or Azure)
+        \item Web server with product database
+        \item CMS for content management
     \end{itemize}
     
     \item Client Environment
     \begin{itemize}
-        \item Web browser support: Chrome, Firefox, Safari, Edge (latest versions)
-        \item Responsive design for various screen sizes
+        \item Modern web browsers
+        \item Mobile-first responsive design
     \end{itemize}
     
-    \item Database Environment
+    \item Database
     \begin{itemize}
-        \item Dedicated database for each microservice as shown in the architecture diagram
-        \item Support for SQL and NoSQL databases depending on service requirements
-    \end{itemize}
-    
-    \item Network Environment
-    \begin{itemize}
-        \item HTTP/HTTPS protocols for client-server communication
-        \item Message Queue (MQ) for asynchronous inter-service communication
+        \item Relational database (MySQL/PostgreSQL)
+        \item Cloud Bucket to store image blob (AWS S3 Bucket)
     \end{itemize}
 \end{itemize}
 
 \section{Design and Implementation Constraints}
-The following constraints will affect the design and implementation of the system:
-
 \begin{itemize}
-    \item Architectural Constraints
+    \item Technical Constraints
     \begin{itemize}
-        \item Microservices architecture as depicted in the diagram
-        \item RESTful API design principles for service interfaces
-        \item Message Queue for asynchronous communication between services
-    \end{itemize}
-    
-    \item Security Constraints
-    \begin{itemize}
-        \item Compliance with PCI DSS for payment processing
-        \item Secure user authentication and authorization
-        \item Data encryption for sensitive information
-        \item Safe payment for user
-        \item Regular security audits and penetration testing
-    \end{itemize}
-    
-    \item Integration Constraints
-    \begin{itemize}
-        \item Compatible with standard payment gateways
-        \item API-based integration with shipping and delivery services
+        \item Responsive design requirements
+        \item WhatsApp Business API integration
+        \item Optimized media loading for product images
     \end{itemize}
     
     \item Performance Constraints
     \begin{itemize}
-        \item Response time for user interactions under 2 seconds
-        \item System capable of handling at least 1000 concurrent users
-        \item Scalability to accommodate peak shopping seasons
+        \item Page load time <3s for 95\% of users
+        \item Support 500 concurrent users
     \end{itemize}
     
-    \item Development Constraints
+    \item Security Constraints
     \begin{itemize}
-        \item Coding standards and style guides for consistency
-        \item Comprehensive unit and integration testing
-        \item CI/CD pipeline for automated testing and deployment
+        \item Secure admin interface
+        \item Regular database backups
     \end{itemize}
 \end{itemize}
 
 \section{Assumptions and Dependencies}
-The following assumptions and dependencies apply to the project:
-
 \begin{itemize}
     \item Assumptions
     \begin{itemize}
-        \item Users have access to stable internet connections
-        \item Peak usage will occur during promotional events and holidays
-        \item Most users will access the system via mobile devices
-        \item Inventory data will be updated in near real-time
+        \item Users have WhatsApp installed
+        \item Primary access via mobile devices
+        \item Product availability matches physical inventory
     \end{itemize}
     
     \item Dependencies
     \begin{itemize}
-        \item Reliable third-party payment processing services
-        \item Shipping and delivery partner APIs
-        \item Cloud infrastructure provider's uptime and service level agreements
-        \item Message Queue service for inter-service communication
-        \item Database management systems for each service's data storage
+        \item WhatsApp Business API availability
+        \item Web hosting reliability
+        \item Image CDN for product photos
     \end{itemize}
-    x
+    
     \item Risks
     \begin{itemize}
-        \item Integration challenges with third-party services
-        \item Scalability issues during peak usage periods
-        \item Security vulnerabilities in payment processing
-        \item Data consistency across microservices
+        \item WhatsApp API changes
+        \item Inventory discrepancies
+        \item High bounce rates from casual browsers
     \end{itemize}
 \end{itemize}
 
